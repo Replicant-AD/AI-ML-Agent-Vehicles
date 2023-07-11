@@ -1,0 +1,297 @@
+fileFormatVersion: 2
+guid: f394a9bf2c8396447b1c427012ec40db
+timeCreated: 1526833473
+licenseType: Store
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: $$$DUMMY.Non_subD_2
+    100002: Non_subD
+    100004: Non_subD_1
+    100006: Non_subD_3
+    100008: sub01
+    100010: sub01.001
+    100012: sub01.002
+    100014: sub02
+    100016: subD
+    100018: subD_1
+    100020: subD_1_2
+    100022: subD_1_3
+    100024: subD_2
+    100026: subD_3
+    100028: subD_4
+    100030: subD_5
+    100032: subD_6
+    100034: //RootNode
+    400000: $$$DUMMY.Non_subD_2
+    400002: Non_subD
+    400004: Non_subD_1
+    400006: Non_subD_3
+    400008: sub01
+    400010: sub01.001
+    400012: sub01.002
+    400014: sub02
+    400016: subD
+    400018: subD_1
+    400020: subD_1_2
+    400022: subD_1_3
+    400024: subD_2
+    400026: subD_3
+    400028: subD_4
+    400030: subD_5
+    400032: subD_6
+    400034: //RootNode
+    2100000: wire_008061138
+    2100002: man_tire
+    2100004: man_p1
+    2100006: wire_088088225
+    2100008: man_shields
+    2100010: man_mirror
+    2100012: man_rubber
+    2100014: wire_224086086
+    2100016: wire_153228214
+    2100018: wire_006134113
+    2100020: man_fl_mirror
+    2100022: __________
+    2100024: man_fl_bulb_oran
+    2100026: man_black
+    2100028: wire_108008136
+    2100030: wire_113134006
+    2100032: man_chrome
+    2100034: man_orange
+    2100036: man_red
+    2100038: man_inside
+    2100040: man_inside_man_r
+    2300000: Non_subD
+    2300002: Non_subD_1
+    2300004: Non_subD_3
+    2300006: sub01
+    2300008: sub01.001
+    2300010: sub01.002
+    2300012: sub02
+    2300014: subD
+    2300016: subD_1
+    2300018: subD_1_2
+    2300020: subD_1_3
+    2300022: subD_2
+    2300024: subD_3
+    2300026: subD_4
+    2300028: subD_5
+    2300030: subD_6
+    3300000: Non_subD
+    3300002: Non_subD_1
+    3300004: Non_subD_3
+    3300006: sub01
+    3300008: sub01.001
+    3300010: sub01.002
+    3300012: sub02
+    3300014: subD
+    3300016: subD_1
+    3300018: subD_1_2
+    3300020: subD_1_3
+    3300022: subD_2
+    3300024: subD_3
+    3300026: subD_4
+    3300028: subD_5
+    3300030: subD_6
+    4300000: sub01.002
+    4300002: sub01.001
+    4300004: sub02
+    4300006: sub01
+    4300008: subD_6
+    4300010: subD_5
+    4300012: subD_4
+    4300014: subD_3
+    4300016: subD_2
+    4300018: subD
+    4300020: Non_subD_1
+    4300022: subD_1_3
+    4300024: Non_subD_3
+    4300026: subD_1
+    4300028: Non_subD
+    4300030: subD_1_2
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: __________
+    second: {fileID: 2100000, guid: 48bc9c2d21bd32c4da15e82127d8ff0b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_black
+    second: {fileID: 2100000, guid: 8598e023830c93e47a61f4e821c85f0b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_chrome
+    second: {fileID: 2100000, guid: 15fb1faa267b0b44c9772d16fc2345e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_fl_bulb_oran
+    second: {fileID: 2100000, guid: 98f1e06d0a08c4547b26151be4cb7a46, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_fl_mirror
+    second: {fileID: 2100000, guid: e29fe80729ed4884f9be7c7773392a06, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_inside
+    second: {fileID: 2100000, guid: c4491b661dc1a20468670020c2b10c3f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_inside_man_r
+    second: {fileID: 2100000, guid: 729122864c2fee147ae15ff686af7976, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_mirror
+    second: {fileID: 2100000, guid: b48fce6ede150ce47b556309bb8159bd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_orange
+    second: {fileID: 2100000, guid: 005ac62cd9ff7c14190ec4c35dd1716b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_p1
+    second: {fileID: 2100000, guid: 7612a1c61d3c93d4781f3399ec220843, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_red
+    second: {fileID: 2100000, guid: c0e3b7d72e16cae488343da6a1c05962, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_rubber
+    second: {fileID: 2100000, guid: ada91fd94a2b9cb4f945ef0d1703354c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_shields
+    second: {fileID: 2100000, guid: a2c862387bd9205498de000ba7c3c694, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: man_tire
+    second: {fileID: 2100000, guid: e83c7d28d4758e1459e4fd706f9b9ea5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wire_006134113
+    second: {fileID: 2100000, guid: 411511a5b9189cb4286a5e8da13b0fe6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wire_008061138
+    second: {fileID: 2100000, guid: 11746ef1a1a1c274fb9afca6f39cb35b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wire_088088225
+    second: {fileID: 2100000, guid: d6ecfe75e285cb94ea838362707a40e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wire_108008136
+    second: {fileID: 2100000, guid: f751a4840e2cb844c8a12fc1a01a2ff4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wire_113134006
+    second: {fileID: 2100000, guid: bafe7854d89769843a10955894c2b766, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wire_153228214
+    second: {fileID: 2100000, guid: efe229ff2f2c61b4c93a7c2b60a29585, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wire_224086086
+    second: {fileID: 2100000, guid: 645a45dadad20104e88f8819418b034d, type: 2}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
