@@ -3,7 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - DirtRoad
+  - Vehicle
+  - EnterExitPoint
+  - Wheel
+  - Road
+  - Trailer
+  - IgnoreDamage
+  - Checkpoint
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -16,7 +25,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Checkpoint
   - 
   - 
   - 

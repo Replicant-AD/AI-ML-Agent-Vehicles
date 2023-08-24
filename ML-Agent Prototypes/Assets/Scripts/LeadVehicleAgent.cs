@@ -2,20 +2,25 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
+using NWH.VehiclePhysics2;
+
 
 public class LeadVehicleAgent : Agent
 {
+    public CheckpointManager _checkpointManager;
     public Transform target;  // Reference to a target or endpoint, if there's a destination
-    public float speed = 10f;  // Speed of the vehicle
-    public float turnSpeed = 5f;  // Speed of turning or steering
+    public float speed = 5f;  // Speed of the vehicle
+    public float turnSpeed = 2f;  // Speed of turning or steering
     public float distancePenalty = -0.05f;  // Penalty for distance from center of the lane
+    public VehicleController _vehicleController;
 
     private Rigidbody rb;
     private Vector3 startingPosition;
     private Quaternion startingRotation;
 
-    private void Start()
+    public override void Initialize()
     {
+        _vehicleController = GetComponent<VehicleController>();
         rb = GetComponent<Rigidbody>();
         startingPosition = transform.position;
         startingRotation = transform.rotation;
@@ -23,6 +28,7 @@ public class LeadVehicleAgent : Agent
 
     public override void OnEpisodeBegin()
     {
+         _checkpointManager.ResetCheckpoints();
         transform.position = startingPosition;
         transform.rotation = startingRotation;
         rb.velocity = Vector3.zero;
@@ -40,12 +46,17 @@ public class LeadVehicleAgent : Agent
         // Raycasts or sensors to detect road boundaries, obstacles, etc.
         // This is a basic example, in a real scenario, you'd use multiple raycasts/sensors
         sensor.AddObservation(Physics.Raycast(transform.position, transform.forward, 10f));  // Detect obstacles in front
+
+        //Checkpoint manager
+        Vector3 diff = _checkpointManager.nextCheckPointToReach.transform.position - transform.position;
+        sensor.AddObservation(diff / 20f);
+        AddReward(-0.001f);
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        float move = actionBuffers.ContinuousActions[0];
-        float turn = actionBuffers.ContinuousActions[1];
+        float move = actionBuffers.ContinuousActions[1];
+        float turn = actionBuffers.ContinuousActions[0];
 
         // Movement
         rb.MovePosition(transform.position + transform.forward * move * speed * Time.fixedDeltaTime);
@@ -74,8 +85,9 @@ public class LeadVehicleAgent : Agent
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         var continuousActionsOut = actionsOut.ContinuousActions;
+        continuousActionsOut[1] = Input.GetAxis("Horizontal");
         continuousActionsOut[0] = Input.GetKey(KeyCode.W) ? 1 : 0;  // Move forward
-        continuousActionsOut[1] = Input.GetKey(KeyCode.A) ? -1 : (Input.GetKey(KeyCode.D) ? 1 : 0);  // Turn left or right
+        //continuousActionsOut[1] = Input.GetKey(KeyCode.A) ? -1 : (Input.GetKey(KeyCode.D) ? 1 : 0);  // Turn left or right
     }
 
     private void OnCollisionEnter(Collision collision)
