@@ -28,7 +28,7 @@ public class LeadVehicleAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-         _checkpointManager.ResetCheckpoints();
+        _checkpointManager.ResetCheckpoints();
         transform.position = startingPosition;
         transform.rotation = startingRotation;
         rb.velocity = Vector3.zero;
@@ -86,8 +86,8 @@ public class LeadVehicleAgent : Agent
     {
         var continuousActionsOut = actionsOut.ContinuousActions;
         continuousActionsOut[1] = Input.GetAxis("Horizontal");
-        continuousActionsOut[0] = Input.GetKey(KeyCode.W) ? 1 : 0;  // Move forward
-        //continuousActionsOut[1] = Input.GetKey(KeyCode.A) ? -1 : (Input.GetKey(KeyCode.D) ? 1 : 0);  // Turn left or right
+        continuousActionsOut[1] = Input.GetKey(KeyCode.W) ? 1 : (Input.GetKey(KeyCode.S) ? -1 : 0);  // Move forward or backward
+        continuousActionsOut[0] = Input.GetKey(KeyCode.A) ? -1 : (Input.GetKey(KeyCode.D) ? 1 : 0);  // Turn left or right
     }
 
     private void OnCollisionEnter(Collision collision)
