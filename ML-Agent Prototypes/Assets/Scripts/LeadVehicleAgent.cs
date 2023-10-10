@@ -8,8 +8,9 @@ using NWH.VehiclePhysics2;
 public class LeadVehicleAgent : Agent
 {
     public CheckpointManager _checkpointManager;
-    public float speed = 5f;  // Speed of the vehicle
-    public float turnSpeed = 2f;  // Speed of turning or steering
+    public float speed = 10f;  // Speed of the vehicle
+    public float turnSpeed = 4f;  // Speed of turning or steering
+    public float MaxTimeToReachNextCheckpoint = 45f;
     public VehicleController _vehicleController;
 
     private Rigidbody rb;
@@ -52,6 +53,21 @@ public class LeadVehicleAgent : Agent
         // Movement
         rb.MovePosition(transform.position + transform.forward * move * speed * Time.fixedDeltaTime);
         transform.Rotate(0, turn * turnSpeed, 0);
+
+        //Time efficiency reward
+        float timeTaken = MaxTimeToReachNextCheckpoint - _checkpointManager.TimeLeft;
+        float timeReward = Mathf.Clamp01(1 - timeTaken / MaxTimeToReachNextCheckpoint);
+        AddReward(timeReward);
+
+        // Reward logic
+        float distanceToCheckpoint = Vector3.Distance(transform.position, _checkpointManager.nextCheckPointToReach.transform.position);
+        AddReward(-distanceToCheckpoint / 1000f);  // Normalize by some factor
+
+        float currentSpeed = rb.velocity.magnitude;
+        if (Mathf.Abs(currentSpeed - speed) < 2f)  // Tolerance of 2 units
+        {
+            AddReward(0.05f);
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
