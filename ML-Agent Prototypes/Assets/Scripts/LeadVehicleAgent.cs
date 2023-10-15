@@ -7,7 +7,6 @@ using NWH.VehiclePhysics2;
 
 public class LeadVehicleAgent : Agent
 {
-    public CheckpointManager _checkpointManager;
     public float speed = 5f;  // Speed of the vehicle
     public float turnSpeed = 2f;  // Speed of turning or steering
     public VehicleController _vehicleController;
@@ -24,7 +23,6 @@ public class LeadVehicleAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        _checkpointManager.ResetCheckpoints();
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
     }
@@ -39,9 +37,6 @@ public class LeadVehicleAgent : Agent
         sensor.AddObservation(Physics.Raycast(transform.position, transform.forward, 10f));  // Detect obstacles in front
 
         //Checkpoint manager
-        Vector3 diff = _checkpointManager.nextCheckPointToReach.transform.position - transform.position;
-        sensor.AddObservation(diff / 20f);
-        AddReward(-0.001f);
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
