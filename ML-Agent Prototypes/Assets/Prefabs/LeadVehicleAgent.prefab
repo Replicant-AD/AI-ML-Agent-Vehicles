@@ -4354,9 +4354,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SensorName: FrontSensor
   m_DetectableTags:
-  - 
-  - 
-  - 
+  - Wall
+  - RoadBlocker
   m_RaysPerDirection: 1
   m_MaxRayDegrees: 3.2
   m_SphereCastRadius: 0.5
@@ -6819,7 +6818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 4
+    VectorObservationSize: 0
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
@@ -6852,9 +6851,10 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
+  _vehicleController: {fileID: 0}
   speed: 10
   turnSpeed: 2
-  _vehicleController: {fileID: 0}
+  Checkpoints: []
 --- !u!114 &9080917222911946936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6869,9 +6869,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SensorName: RayPerceptionSensor
   m_DetectableTags:
-  - 
-  - 
-  - 
+  - Wall
+  - RoadBlocker
   m_RaysPerDirection: 2
   m_MaxRayDegrees: 120
   m_SphereCastRadius: 0

@@ -7,10 +7,10 @@ using NWH.VehiclePhysics2;
 
 public class LeadVehicleAgent : Agent
 {
+    public VehicleController _vehicleController;
     public float speed = 5f;  // Speed of the vehicle
     public float turnSpeed = 2f;  // Speed of turning or steering
-    public VehicleController _vehicleController;
-
+    public GameObject[] Checkpoints;
     private Rigidbody rb;
     private Vector3 startingPosition;
     private Quaternion startingRotation;
@@ -25,18 +25,22 @@ public class LeadVehicleAgent : Agent
     {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
+        for (int i=0; i< Checkpoints.Length; i++){
+            Checkpoints[i].gameObject.SetActive(true);
+        }
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {   
         // Current speed
-        sensor.AddObservation(rb.velocity);
+        //sensor.AddObservation(rb.velocity);
         
         // Raycasts or sensors to detect road boundaries, obstacles, etc.
         // This is a basic example, in a real scenario, you'd use multiple raycasts/sensors
-        sensor.AddObservation(Physics.Raycast(transform.position, transform.forward, 10f));  // Detect obstacles in front
+        //sensor.AddObservation(Physics.Raycast(transform.position, transform.forward, 10f));  // Detect obstacles in front
 
-        //Checkpoint manager
+        AddReward(-0.001f);
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -56,12 +60,36 @@ public class LeadVehicleAgent : Agent
         continuousActionsOut[0] = Input.GetKey(KeyCode.A) ? -1 : (Input.GetKey(KeyCode.D) ? 1 : 0);  // Turn left or right
     }
 
-    private void OnCollisionEnter(Collision collision)
+     private void OnTriggerEnter(Collider other)
     {
-        // Penalize for collisions
-        if (collision.gameObject.CompareTag("Obstacle"))
+        // If the agent collides with a checkpoint, add a reward and deactivate the checkpoint
+        if (other.gameObject.tag == "Checkpoint")
         {
-            AddReward(-1);
+            AddReward(10.0f);
+            other.gameObject.SetActive(false);
+        }
+
+        // If the agent collides with the goal, add a reward and end the episode
+        if (other.gameObject.tag == "Goal")
+        {
+            other.gameObject.SetActive(false);
+            AddReward(10.0f);
+            EndEpisode();
+        }
+    }
+
+     private void OnCollisionEnter(Collision collision)
+    {
+        // If the agent collides with the wall or road blocker, end the episode
+        if (collision.gameObject.tag == "Wall")
+        {
+            SetReward(-10.0f);
+            EndEpisode();
+        }
+
+        if (collision.gameObject.tag == "RoadBlocker")
+        {
+            SetReward(-10.0f);
             EndEpisode();
         }
     }
