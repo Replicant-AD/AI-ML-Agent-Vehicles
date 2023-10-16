@@ -8,7 +8,7 @@ using NWH.VehiclePhysics2;
 public class LeadVehicleAgent : Agent
 {
     public VehicleController _vehicleController;
-    public float speed = 5f;  // Speed of the vehicle
+    public float speed = 10f;  // Speed of the vehicle
     public float turnSpeed = 2f;  // Speed of turning or steering
     public GameObject[] Checkpoints;
     private Rigidbody rb;

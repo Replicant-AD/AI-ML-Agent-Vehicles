@@ -13,6 +13,9 @@ TagManager:
   - IgnoreDamage
   - Checkpoint
   - Obstacle
+  - Wall
+  - RoadBlocker
+  - Goal
   layers:
   - Default
   - TransparentFX
@@ -25,7 +28,7 @@ TagManager:
   - 
   - 
   - 
-  - Checkpoint
+  - 
   - 
   - 
   - 
