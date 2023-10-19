@@ -8,7 +8,7 @@ public class CheckpointManager : MonoBehaviour
     public float MaxTimeToReachNextCheckpoint = 30f;
     public float TimeLeft = 30f;
     
-    public LeadVehicleAgent leadVehicleAgent;  // Changed from KartAgent to LeadVehicleAgent
+    public TruckAgent truckAgent; 
     public Checkpoint nextCheckPointToReach;
     
     private int CurrentCheckpointIndex;
@@ -37,8 +37,8 @@ public class CheckpointManager : MonoBehaviour
 
         if (TimeLeft < 0f)
         {
-            leadVehicleAgent.AddReward(-1f);  // Changed from kartAgent to leadVehicleAgent
-            leadVehicleAgent.EndEpisode();  // Changed from kartAgent to leadVehicleAgent
+            truckAgent.AddReward(-1f); 
+            truckAgent.EndEpisode(); 
         }
     }
 
@@ -52,12 +52,12 @@ public class CheckpointManager : MonoBehaviour
 
         if (CurrentCheckpointIndex >= Checkpoints.Count)
         {
-            leadVehicleAgent.AddReward(0.5f);  // Changed from kartAgent to leadVehicleAgent
-            leadVehicleAgent.EndEpisode();  // Changed from kartAgent to leadVehicleAgent
+            truckAgent.AddReward(0.5f); 
+            truckAgent.EndEpisode(); 
         }
         else
         {
-            leadVehicleAgent.AddReward((0.5f) / Checkpoints.Count);  // Changed from kartAgent to leadVehicleAgent
+            truckAgent.AddReward((0.5f) / Checkpoints.Count); 
             SetNextCheckpoint();
         }
     }
