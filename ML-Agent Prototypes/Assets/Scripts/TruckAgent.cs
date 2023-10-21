@@ -8,14 +8,22 @@ using NWH.VehiclePhysics2;
 
 public class TruckAgent : Agent
 {
+    public Transform nextVehicle;
     public VehicleController _vehicleController;
     public float speed = 10f;  // Speed of the vehicle
     public float turnSpeed = 2f;  // Speed of turning or steering
+    int amountOfRays = 15;
+    float startAngle = -90.0f;
+    float endAngle = 90.0f;
     public GameObject[] Checkpoints;
-    private Rigidbody rb;
+    private Rigidbody m_Rigidbody;
+    [SerializeField] private float m_distanceToTarget;
     private Vector3 startPosition;
+    [SerializeField] private Vector3 m_velocity;
+    private Vector3 m_checkpointPos;
+    [SerializeField] private Vector3 m_dirToTarget;
+    [SerializeField] private Vector3 m_angularVelocity;
     private Quaternion startRotation;
-    public Transform nextVehicle;
     float behaviour = 0.0f;
 
      // ---- DEBUG
@@ -38,7 +46,7 @@ public class TruckAgent : Agent
     public override void Initialize()
     {
         _vehicleController = GetComponent<VehicleController>();
-        rb = GetComponent<Rigidbody>();
+        m_Rigidbody = GetComponent<Rigidbody>();
         startPosition = transform.position;
         startRotation = transform.rotation;
     }
@@ -47,8 +55,8 @@ public class TruckAgent : Agent
     {
         transform.position = startPosition;
         transform.rotation = startRotation;
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        m_Rigidbody.velocity = Vector3.zero;
+        m_Rigidbody.angularVelocity = Vector3.zero;
 
         targetLeaderSpeed = Academy.Instance.EnvironmentParameters.GetWithDefault("target_leader_speed", 10.0f);
         targetFollowerDistance = Academy.Instance.EnvironmentParameters.GetWithDefault("target_follower_distance", 10.0f);
@@ -63,8 +71,8 @@ public class TruckAgent : Agent
         followerDistancePunishmentFactor = Academy.Instance.EnvironmentParameters.GetWithDefault("follower_distance_punishment_factor", 5.0f);
         followerSpeedPunishmentFactor = Academy.Instance.EnvironmentParameters.GetWithDefault("follower_speed_punishment_factor", 1.0f);
     
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        m_Rigidbody.velocity = Vector3.zero;
+        m_Rigidbody.angularVelocity = Vector3.zero;
 
         for (int i=0; i< Checkpoints.Length; i++){
             Checkpoints[i].gameObject.SetActive(true);
@@ -73,14 +81,80 @@ public class TruckAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {   
-        // Current speed
-        //sensor.AddObservation(rb.velocity);
-        
         // Raycasts or sensors to detect road boundaries, obstacles, etc.
-        // This is a basic example, in a real scenario, you'd use multiple raycasts/sensors
-        //sensor.AddObservation(Physics.Raycast(transform.position, transform.forward, 10f));  // Detect obstacles in front
+        // Detect obstacles in front
+        sensor.AddObservation(Physics.Raycast(transform.position, transform.forward, 10f)); 
 
-        AddReward(-0.001f);
+        // Agent velocity
+        m_velocity = transform.InverseTransformDirection(m_Rigidbody.velocity) / 20f;
+        sensor.AddObservation(new Vector2(m_velocity.x, m_velocity.z)); // vec2
+
+        // Distance to incoming checkpoint
+        sensor.AddObservation(m_distanceToTarget / 30f); // float
+
+        // Agent's normalized local position
+        sensor.AddObservation(new Vector2(transform.localPosition.x / 500f, transform.localPosition.z / 500f)); // vec2
+
+        // Calculate the direction to incoming checkpoint
+        m_dirToTarget = (m_checkpointPos - transform.localPosition).normalized;
+
+        // Dot product of agent forward and direction to incoming checkpoint/target
+        sensor.AddObservation(Vector3.Dot(transform.forward, m_dirToTarget)); //float
+
+        // Agent angular velocity
+        m_angularVelocity = transform.InverseTransformDirection(m_Rigidbody.angularVelocity) / 3f;
+        sensor.AddObservation(m_angularVelocity.y); // float
+
+        // Rays = 15 * 4 = 60
+        float angle = startAngle;
+        float angleStep = (endAngle - startAngle) / amountOfRays;
+        for (int i = 0; i < amountOfRays; i++)
+        {
+            Vector3 direction = Quaternion.AngleAxis(angle, transform.up) * transform.forward;
+            direction.y = 0.0f;
+            direction.Normalize();
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, direction, out hit, 100.0f))
+            {
+                sensor.AddObservation(hit.distance / 100.0f);
+                sensor.AddObservation(hit.normal);
+                Debug.DrawRay(transform.position, direction * hit.distance, Color.red / 2.0f);
+                Debug.DrawRay(hit.point, hit.normal, Color.green / 2.0f);
+            }
+            else
+            {
+                sensor.AddObservation(0.0f);
+                sensor.AddObservation(Vector3.zero);
+            }
+            angle += angleStep;
+        }
+
+        // Rigidbody = 4
+        sensor.AddObservation(m_Rigidbody.velocity);
+        sensor.AddObservation(m_Rigidbody.velocity.magnitude);
+
+        // Next Vehicle = 6
+        if (nextVehicle != null)
+        {
+            Vector3 relativeDirection = transform.InverseTransformDirection(nextVehicle.position - transform.position);
+            sensor.AddObservation(relativeDirection);
+            sensor.AddObservation(relativeDirection.magnitude);
+            sensor.AddObservation(nextVehicle.GetComponent<Rigidbody>().velocity.magnitude);
+            sensor.AddObservation(Vector3.SignedAngle(transform.forward, nextVehicle.position - transform.position, transform.up) / 180.0f);
+        }
+        else
+        {
+            sensor.AddObservation(Vector3.zero);
+            sensor.AddObservation(0.0f);
+            sensor.AddObservation(0.0f);
+            sensor.AddObservation(0.0f);
+        }
+
+        // config = 4
+        sensor.AddObservation(targetLeaderSpeed);
+        sensor.AddObservation(targetFollowerDistance);
+        sensor.AddObservation(targetFollowerSpeed);
+        sensor.AddObservation(behaviour);
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -89,15 +163,19 @@ public class TruckAgent : Agent
         float turn = actionBuffers.ContinuousActions[0];
 
         // Movement
-        rb.MovePosition(transform.position + transform.forward * move * speed * Time.fixedDeltaTime);
+        m_Rigidbody.MovePosition(transform.position + transform.forward * move * speed * Time.fixedDeltaTime);
         transform.Rotate(0, turn * turnSpeed, 0);
+
+        CalculateReward();
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         var continuousActionsOut = actionsOut.ContinuousActions;
-        continuousActionsOut[1] = Input.GetKey(KeyCode.W) ? 1 : (Input.GetKey(KeyCode.S) ? -1 : 0);  // Move forward or backward
-        continuousActionsOut[0] = Input.GetKey(KeyCode.A) ? -1 : (Input.GetKey(KeyCode.D) ? 1 : 0);  // Turn left or right
+        // Move forward or backward
+        continuousActionsOut[1] = Input.GetKey(KeyCode.W) ? 1 : (Input.GetKey(KeyCode.S) ? -1 : 0); 
+        // Turn left or right
+        continuousActionsOut[0] = Input.GetKey(KeyCode.A) ? -1 : (Input.GetKey(KeyCode.D) ? 1 : 0); 
     }
 
       private void OnTriggerEnter(Collider other)
@@ -120,7 +198,7 @@ public class TruckAgent : Agent
 
     private void CalculateReward()
     {
-        if (nextVehicle != null) /* follower */
+        if (nextVehicle != null) /* Follower */
         {
             RaycastHit hit;
             float distance = Vector3.Distance(transform.position, nextVehicle.position);
@@ -133,7 +211,7 @@ public class TruckAgent : Agent
                 FollowerBehaviour();
             }
         }
-        else /* leader */
+        else /* Leader */
         {
             LeaderBehaviour();
         }
@@ -147,7 +225,7 @@ public class TruckAgent : Agent
 
         // ==== SPEED
         float speed_r;
-        float speed = rb.velocity.magnitude;
+        float speed = m_Rigidbody.velocity.magnitude;
         if (speed < targetLeaderSpeed)
         {
             speed_r = -QuadraticPunishment(
@@ -261,7 +339,7 @@ public class TruckAgent : Agent
 
         // ==== SPEED
         float speed_r;
-        float speed = rb.velocity.magnitude;
+        float speed = m_Rigidbody.velocity.magnitude;
         if (speed < targetFollowerSpeed)
         {
             speed_r = -QuadraticPunishment(
